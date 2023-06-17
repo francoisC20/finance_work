@@ -7,6 +7,9 @@ from matplotlib import cm
 #--------------------- PARENT 1 -------------------------------#
 
 class OptionsPricing(object):
+    '''
+    Defines the option wwhich will be priced by the chosen finite difference method
+    '''
     
     def __init__(self, S0, K, r, T, sigma, is_call=True):
         self.S0 = S0
@@ -36,10 +39,14 @@ class FDM_Option(OptionsPricing):
         self.grid = np.zeros(shape=(self.M+1, self.N+1)) # grid is M+1 by N+1
         self.SValues = np.linspace(0, Smax, self.M+1)
 
+    # the three following methods are implemented in son classes 
+    # according to the corresponding finite difference scheme
+    
     def _fix_boundary_conditions_(self):
         pass
 
     def _coefficients_(self):
+        '''sets the coefficients of the scheme formula'''
         pass
 
     def _fill_grid_(self):
@@ -98,6 +105,10 @@ class FDM_Option(OptionsPricing):
 #----------------------- SON LEVEL 2 --------------------------#
 
 class FDM_Explicit(FDM_Option):
+    '''
+    The Euler Explicit method uses backward process starting from maturity and boundary conditions,
+    whcih does not require system solving algorithms
+    '''
     
     def _coefficients_(self):
         self.alpha = 0.5*self.dt * (self.sigma**2 * self.iValues**2 - self.r * self.iValues)
